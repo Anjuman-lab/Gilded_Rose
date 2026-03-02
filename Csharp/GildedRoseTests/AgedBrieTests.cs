@@ -15,6 +15,7 @@ namespace GildedRoseTests
 
         [TestCase(10, 39, 40, TestName = "AgedBrie_ReachesMaxQualityOf40")]
         [TestCase(-1, 39, 40, TestName = "AgedBrie_QualityStillCapsAt40_AfterSellBy")]
+        [TestCase(0, 40, 40, TestName = "AgedBrie_QualityStillCapsAt40_AtExactlyZeroSellIn")]
         public void UpdateQuality_AgedBrie(int sellIn, int quality, int expectedQuality)
         {
             var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = sellIn, Quality = quality } };
