@@ -12,7 +12,7 @@ I replaced the nested if-else logic in UpdateQuality with a Strategy Pattern.
 ### 2. Factory Pattern
 The ItemUpdaterFactory centralizes the logic for selecting the correct update strategy.
 
-- **Robustness**: I utilized .StartsWith() for category matching (e.g. `Conjured`). This ensures the system is resilient to varied item naming while strictly following the categories defined in the requirements.
+- **Robustness**: I utilized .Contains() and .StartsWith() for category matching (e.g., `"Sulfuras"`, `"Backstage passes"`, `"Conjured"`). This ensures the system is resilient to varied item naming while strictly following the categories defined in the requirements.
 
 ### 3. Item Class Constraint
 As per the specification, the Item class and its properties remained unaltered. All logic was implemented by wrapping the item in an updater retrieved via the Factory.
