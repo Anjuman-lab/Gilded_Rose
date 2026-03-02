@@ -14,10 +14,10 @@ namespace GildedRoseKata.Factories
             if (item.Name == "Aged Brie")
                 return new AgedBrieUpdater();
 
-            if (item.Name == "Sulfuras")
+            if (item.Name.Contains("Sulfuras"))
                 return new SulfurasUpdater();
 
-            if (item.Name == "Backstage passes")
+            if (item.Name.Contains("Backstage passes"))
                 return new BackstagePassUpdater();
 
             if (item.Name.StartsWith("Conjured"))
