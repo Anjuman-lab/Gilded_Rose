@@ -1,83 +1,55 @@
-# Isio Developer Technical Test
+## Overview
 
-This test revolves around a refactoring excercise called The Gilded Rose.
+This repository contains a refactored solution for the Gilded Rose inventory system. The primary goal was to transform a tightly coupled, conditional-heavy codebase into a maintainable, test-driven architecture while implementing the new "Conjured" item functionality.
 
-It can be completed in any of the following programming languages:
-- C#
-- JavaScript
-- PHP
-- Python
-- TypeScript
-- Visual Basic
+## Design Decisions
+### 1. The Strategy Pattern
+I replaced the nested if-else logic in UpdateQuality with a Strategy Pattern.
 
+- **Reasoning**: Each item type now has its own dedicated class (e.g., `AgedBrieUpdater`, `BackstagePassUpdater`) implementing a common IItemUpdater interface. This follows the **Single Responsibility Principle** and makes the logic for each item type easy to isolate and debug.
+- **Encapsulation**: By using a `BaseItemUpdater`, I centralized the shared "safety rails" (Min Quality 0, Max Quality 40).
 
-## How to complete the test
+### 2. Factory Pattern
+The ItemUpdaterFactory centralizes the logic for selecting the correct update strategy.
 
-Download the code in this repository and complete the test using your programming language of choice.
-For each language, there is a unit test file and an example simulation program to help get you started.
+- **Robustness**: I utilized .StartsWith() for category matching (e.g. `Conjured`). This ensures the system is resilient to varied item naming while strictly following the categories defined in the requirements.
 
-When your solution is ready, send us the link to your submission (e.g. public Github repository or similar). 
-Don't forget to include any additional instructions on how to build or run your solution, especially if you have introduced any new frameworks.
+### 3. Item Class Constraint
+As per the specification, the Item class and its properties remained unaltered. All logic was implemented by wrapping the item in an updater retrieved via the Factory.
 
-⚠️ Please do not submit PRs with test solutions directly against this source repository! They will be rejected.
+### Technical Capability & Principles
+- **Readability**: Each updater class is small (typically <15 lines), making the business logic for each item immediately apparent.
+- **Maintainability**: Adding a new item type no longer requires touching existing logic for other items, preventing regression bugs.
+- **Open/Closed Principle**: The system is "Open" for extension (adding new items) but "Closed" for modification (we don't need to change the main GildedRose loop).
 
-As the task is refactoring based, a solution is widley open to developer interpretation and offers the opportunity for a candidate to showcase their broader skillset. 
+### Testing Strategy
+I utilized NUnit 4 to create a robust suite of unit tests.
 
-There is no *correct* solution as such. Instead, you may be invited to justify your solution based on your approach and the technical design decisions you have made. You are welcome to include a new README file with your submission to assist with justification of your work.
+- **Data-Driven Testing**: I used `[TestCase]` attributes to cover multiple boundary conditions (e.g., SellIn values of 11, 10, 6, 5, 1, and 0 for Backstage Passes) within single test methods.
+- **Boundary Analysis**: Tests were specifically written to verify the 40 Quality Cap and the 0 Quality Floor, ensuring that even "Legendary" or "Conjured" items respect the system's global constraints.
+- **Refactoring Safety**: Before modifying the original logic, I verified existing behavior with characterization tests to ensure 100% functional parity.
 
-Feel free to go above and beyond the initial requirements specification if desired. For example, you may think of an additional requirement and illustrate how your refactored code allows you to implement this efficiently.
+### "Above and Beyond": Extensibility
+A key advantage of this refactored architecture is its extreme ease of extension. For example, if the innkeeper introduced a "Frozen" item category (which degrades at half the speed of normal items), the implementation would require only two steps:
 
-You can spend as long as you like working on your submission, however a typical solution should take no more than 2-3 hours.
+- Create a FrozenUpdater class inheriting from `BaseItemUpdater`.
+- Add one line to the `ItemUpdaterFactory` to map the name "Frozen" to the new class.
+This illustrates that the codebase is now prepared for future business requirements with minimal risk.
 
-## Gilded Rose Requirements Specification
+### How to Run
+#### Prerequisites
+- .NET 8.0 SDK
 
-Hi and welcome to team Gilded Rose. As you may already know, we are a small inn with a prime location in a
-prominent city ran by a friendly innkeeper. We also buy and sell only the finest goods.
-Unfortunately, our goods are constantly degrading in `Quality` as they approach their sell by date.
+#### Build and Run
+To restore dependencies, build the project, and run the main entry point:
 
-We have a system in place that updates our inventory for us, however its codebase is very basic and is becoming increasingly difficult for us to maintain when we want to add or update functionality. 
+#### Bash
+- dotnet run
+  
+#### Running Tests
+To execute the NUnit test suite and view the results:
 
-Your task is to improve the quality of our codebase, and also add a new feature to our system so that we can begin selling a new category of items. First an introduction to our system:
-
-- All `items` have a `SellIn` value which denotes the number of days we have to sell the `items`
-- All `items` have a `Quality` value which denotes how valuable the item is
-- At the end of each day our system lowers both values for every item
-
-Pretty simple, right? Well this is where it gets interesting:
-
-- Once the sell by date has passed, `Quality` degrades twice as fast
-- The `Quality` of an item is never negative
-- __"Aged Brie"__ actually increases in `Quality` the older it gets
-- The `Quality` of an item is never more than `40`
-- __"Sulfuras"__, being a legendary item, never has to be sold or decreases in `Quality`
-- __"Backstage passes"__, like aged brie, increases in `Quality` as its `SellIn` value approaches;
-	- `Quality` increases by `3` when there are `7` days or less and by `4` when there are `2` days or less but
-	- `Quality` drops to `0` after the concert
-
-We have recently signed a supplier of conjured items. This requires an update to our system:
-
-- __"Conjured"__ items degrade in `Quality` twice as fast as normal items
-
-Feel free to make any changes to the `UpdateQuality` method and add any new code as long as everything
-still works correctly. However, you must __NOT__ alter the `Item` class or any of its properties.
-
-## Submission Review
-We are looking for candidates to successfully demonstrate the following criteria to be progressed to the stage in our application process:
-1. Have shown an understanding and appreciation for the rules of the test
-2. Solution compiles and/or runs on all assessor machines (using any additional and reasonable instructions provided) 
-3. Have successfully implemented the new feature request
-4. Demonstrated a clear attempt at code refactoring
-5. Demonstrated a clear understanding of software testing
-6. Solution contains few or zero bugs
-7. Solution does NOT contain evidence of over-reliance on AI (please refrain from doing this, we are looking to assess your own skills and potential. Submissions that show over-reliance on AI will not be progressed) 
-8. Solution does NOT contain signs of private, plagiarised, inappropriate or malicious material
-9. Demonstrated technical capability in their submission, assessed through the following areas:
-	1. Readability
-	2. Maintainability
-	3. Complexity
-	4. Performance 
-	5. Any documented design decision justifications
+#### Bash
+- dotnet test
 
 
-## Credits
-The test source code is forked and adapted from the public original, which can be found here: https://github.com/emilybache/GildedRose-Refactoring-Kata 
