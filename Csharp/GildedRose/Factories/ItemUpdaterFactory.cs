@@ -11,6 +11,11 @@ namespace GildedRoseKata.Factories
     {
         public static IItemUpdater GetUpdater(Item item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item), "Cannot update a null item.");
+            }
+
             if (item.Name == "Aged Brie")
                 return new AgedBrieUpdater();
 

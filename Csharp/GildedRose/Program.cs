@@ -41,9 +41,25 @@ public class Program
         var app = new GildedRose(items);
 
         int days = 2;
+
+        // --- NEW INPUT HANDLING & EXCEPTIONS ---
         if (args.Length > 0)
         {
-            days = int.Parse(args[0]) + 1;
+            // This handles "1.5", "abc", or null inputs
+            if (!int.TryParse(args[0], out int parsedDays))
+            {
+                Console.WriteLine("ERROR: Invalid input detected.");
+                Console.WriteLine("The number of days must be a whole integer (e.g., 1, 10, 30).");
+                return;
+            }
+
+            // Handle negative numbers
+            if (parsedDays < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(args), "The number of days cannot be negative.");
+            }
+
+            days = parsedDays + 1;
         }
 
         for (var i = 0; i < days; i++)
