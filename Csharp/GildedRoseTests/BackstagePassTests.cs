@@ -16,6 +16,10 @@ namespace GildedRoseTests
         [TestCase(2, 20, 24, TestName = "BackstagePass_IncreasesBy4_At2DaysOrLess")]
         [TestCase(0, 20, 0, TestName = "BackstagePass_QualityDropsToZero_AfterConcert")]
         [TestCase(5, 39, 40, TestName = "BackstagePass_Quality_StillCapsAt40")]
+
+        [TestCase(8, 20, 21, TestName = "BackstagePass_IncreasesBy1_At8Days")] // Boundary for the 7-day rule
+        [TestCase(3, 20, 23, TestName = "BackstagePass_IncreasesBy3_At3Days")] // Boundary for the 2-day rule
+        [TestCase(5, 38, 40, TestName = "BackstagePass_Quality_CapsAt40_EvenWithLargeIncrease")]
         public void UpdateQuality_BackstagePasses(int sellIn, int quality, int expectedQuality)
         {
             var items = new List<Item> 
