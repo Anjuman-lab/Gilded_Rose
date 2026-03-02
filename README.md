@@ -21,7 +21,7 @@ As per the specification, the Item class and its properties remained unaltered. 
 - **Readability**: Each updater class is small (typically <15 lines), making the business logic for each item immediately apparent.
 - **Maintainability**: Adding a new item type no longer requires touching existing logic for other items, preventing regression bugs.
 - **Open/Closed Principle**: The system is "Open" for extension (adding new items) but "Closed" for modification (we don't need to change the main GildedRose loop).
-- **Defensive Programming**: The CLI now utilizes int.TryParse to gracefully handle invalid inputs (such as decimals or text) and includes guard clauses with ArgumentNullException to ensure system stability.
+- **Defensive Programming**: The CLI now utilizes `int.TryParse` to gracefully handle invalid inputs (such as decimals or text) and includes guard clauses with `ArgumentNullException` to ensure system stability.
 
 ### Testing Strategy
 I utilized NUnit 4 to create a robust suite of unit tests.
