@@ -27,7 +27,7 @@ namespace GildedRoseTests
             { 
                 new Item 
                 { 
-                        Name = "Backstage passes", 
+                        Name = "Backstage passes to a TAFKAL80ETC concert", 
                         SellIn = sellIn, 
                         Quality = quality 
                 } 

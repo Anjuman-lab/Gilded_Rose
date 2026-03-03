@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace GildedRoseTests
 {
+    [TestFixture]
     public class ConjuredItemTests
     {
         [TestCase(10, 20, 18, TestName = "Conjured_DegradesTwiceAsFast_AsNormal")]
